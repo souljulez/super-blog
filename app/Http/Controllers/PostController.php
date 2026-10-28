@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendNewPostAlert;
+use App\Mail\AddNewBlogPost;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -42,6 +46,8 @@ class PostController extends Controller
         ]);
 
         $post = Post::create($validatedData);
+
+        SendNewPostAlert::dispatch();
 
         return view('posts.show', compact('post'));
     }
